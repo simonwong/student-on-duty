@@ -1,0 +1,41 @@
+{
+  "name": "student-on-duty",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Simon",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "yarn lint:js && yarn lint:style",
+    "lint:js": "eslint --ext .js,.ts,jsx,tsx --format=pretty ./src",
+    "lint:style": "stylelint \"src/**/*.less\" --syntax less",
+    "lint:fix": "eslint --fix --ext .js,.ts,jsx,tsx --format=pretty ./src && stylelint --fix \"src/**/*.less\" --syntax less"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{.js,.ts,jsx,tsx}": [
+      "prettier --write",
+      "eslint --fix --format=pretty"
+    ],
+    "*.less": [
+      "stylelint --syntax less --fix"
+    ]
+  },
+  "dependencies": {
+    "echarts": "^5.0.2",
+    "next": "^10.0.8",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@yueqing/lint": "^1.3.0",
+    "babel-eslint": "^10.1.0"
+  }
+}
