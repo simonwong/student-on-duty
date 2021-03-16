@@ -38,6 +38,8 @@ function HomePage() {
         if (!item.onDuty.includes(id)) {
           obj[id].rateArr.push(0)
           obj[id].rankArr.push(0)
+        } else {
+          obj[id].rankArr.push(item.gammer.length > 5 ? -1 : -2)
         }
       })
     })
@@ -94,6 +96,10 @@ function HomePage() {
     const chartDom = document.getElementById('main')
     const myChart = echarts.init(chartDom)
     const option = {
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c}',
+      },
       legend: {
         top: 'bottom',
       },
@@ -129,8 +135,6 @@ function HomePage() {
   // sortedData.forEach(item => {
   //   console.log(item.onDuty.map(id => personMap[id]).join(','), item.createDate)
   // })
-
-  console.log(personMap)
 
   return (
     <div>
