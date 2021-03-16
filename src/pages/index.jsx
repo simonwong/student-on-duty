@@ -37,14 +37,14 @@ function HomePage() {
         obj[id].joinTimes += 1
         if (!item.onDuty.includes(id)) {
           obj[id].rateArr.push(0)
-          obj[id].rankArr.push(0)
-        } else {
           obj[id].rankArr.push(item.gammer.length > 5 ? -1 : -2)
         }
       })
     })
     return obj
   }, [])
+
+  console.log('personMap', personMap)
 
   // 数据统计
   const stateMap = useMemo(() => {
