@@ -18,17 +18,26 @@ function HomePage() {
   const personMap = useMemo(() => {
     const obj = {}
     person.forEach(({ id, name }) => {
-      obj[id] = { name, times: 0, joinTimes: 0, rate: 0, rateArr: [] }
+      obj[id] = {
+        name,
+        times: 0,
+        joinTimes: 0,
+        rate: 0,
+        rateArr: [],
+        rankArr: [],
+      }
     })
     data.forEach(item => {
       item.onDuty.forEach(id => {
         obj[id].times += 1
         obj[id].rateArr.push(item.onDuty.length / item.gammer.length)
+        obj[id].rankArr.push(item.gammer.length) // 这里暂时把参与人数当成权重值
       })
       item.gammer.forEach(id => {
         obj[id].joinTimes += 1
         if (!item.onDuty.includes(id)) {
           obj[id].rateArr.push(0)
+          obj[id].rankArr.push(0)
         }
       })
     })
@@ -56,6 +65,11 @@ function HomePage() {
       name: personMap[id].name,
     }))
 
+    const personRankData = Object.keys(personMap).map(id => ({
+      value: personMap[id].rankArr.reduce((pre, next) => pre + next, 0),
+      name: personMap[id].name,
+    }))
+
     return {
       times: {
         title: '胜利次数统计',
@@ -68,6 +82,10 @@ function HomePage() {
       personWin: {
         title: '个人平均胜率统计',
         data: personWinData,
+      },
+      personRank: {
+        title: '个人实力段位',
+        data: personRankData,
       },
     }
   }, [personMap])
