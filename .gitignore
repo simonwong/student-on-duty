@@ -62,3 +62,4 @@ typings/
 .env
 
 .next
+next-env.d.ts

@@ -21,7 +21,7 @@ pipeline {
       steps {
         sh "docker build -t ${IMG_NAME} -f Dockerfile ."
         sh "docker run -d \
-            -p 3000:7404 \
+            -p 7404:3000 \
             --name ${CONTAINER_NAME} \
             ${IMG_NAME}"
       }
