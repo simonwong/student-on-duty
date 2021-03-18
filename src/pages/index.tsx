@@ -1,16 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import * as echarts from 'echarts'
-import person from './person.json'
-import data from './data.json'
-
-// interface PersonMapData {
-//   [id as string]: {
-//     name: string
-//     times: number
-//     joinTimes: number
-//     rate: number
-//   }
-// }
+import person from '../database/person.json'
+import data from '../database/data.json'
 
 function HomePage() {
   const [type, setType] = useState('times')
@@ -44,7 +35,7 @@ function HomePage() {
     return obj
   }, [])
 
-  console.log('personMap', personMap)
+  // console.log('personMap', personMap)
 
   // 数据统计
   const stateMap = useMemo(() => {
