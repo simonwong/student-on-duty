@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import * as echarts from 'echarts'
+import { ButtonGroup, Button } from '@material-ui/core'
 import person from '../database/person.json'
 import data from '../database/data.json'
 
@@ -130,17 +131,19 @@ function HomePage() {
   return (
     <div>
       <h1>{stateMap[type].title}</h1>
-      {Object.keys(stateMap).map(key => (
-        <button
-          type="button"
-          key={key}
-          onClick={() => {
-            setType(key)
-          }}
-        >
-          {stateMap[key].title}
-        </button>
-      ))}
+      <ButtonGroup variant="contained" color="primary">
+        {Object.keys(stateMap).map(key => (
+          <Button
+            type="button"
+            key={key}
+            onClick={() => {
+              setType(key)
+            }}
+          >
+            {stateMap[key].title}
+          </Button>
+        ))}
+      </ButtonGroup>
       <div style={{ width: '100%', height: '80vh' }} id="main" />
     </div>
   )

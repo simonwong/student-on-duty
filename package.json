@@ -27,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
     "echarts": "^5.0.2",
     "next": "^10.0.8",
     "react": "^17.0.1",
