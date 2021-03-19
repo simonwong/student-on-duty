@@ -3,7 +3,7 @@ type PersonItem = {
   id: number
 }
 
-type PersonList = PersonItem[]
+export type PersonList = PersonItem[]
 
 type DataItem = {
   gammer: number[]
@@ -11,7 +11,7 @@ type DataItem = {
   createDate: string
 }
 
-type DataList = DataItem[]
+export type DataList = DataItem[]
 
 interface PersonMapData {
   [id as string]: {

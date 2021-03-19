@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import * as echarts from 'echarts'
 import { ButtonGroup, Button } from '@material-ui/core'
+import { DataList, PersonList } from '../typings/data.d'
 import person from '../database/person.json'
 import data from '../database/data.json'
 
@@ -9,7 +10,7 @@ function HomePage() {
   // 人物数据
   const personMap = useMemo(() => {
     const obj = {}
-    person.forEach(({ id, name }) => {
+    ;(person as PersonList).forEach(({ id, name }) => {
       obj[id] = {
         name,
         times: 0,
@@ -19,7 +20,7 @@ function HomePage() {
         rankArr: [],
       }
     })
-    data.forEach(item => {
+    ;(data as DataList).forEach(item => {
       item.onDuty.forEach(id => {
         obj[id].times += 1
         obj[id].rateArr.push(item.onDuty.length / item.gammer.length)
