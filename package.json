@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "echarts": "^5.0.2",
     "next": "^10.0.8",
     "react": "^17.0.1",

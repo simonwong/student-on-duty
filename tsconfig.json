@@ -19,6 +19,9 @@
     "noImplicitAny": false,
     /* Module Resolution Options */
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "outDir": "./lib",
     "esModuleInterop": true,
     "moduleResolution": "node",
