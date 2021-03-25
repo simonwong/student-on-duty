@@ -1,9 +1,9 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import * as echarts from 'echarts'
 import { ButtonGroup, Button } from '@material-ui/core'
-import { DataList, PersonList } from '../typings/data.d'
-import person from '../database/person.json'
-import data from '../database/data.json'
+import { DataList, PersonList } from '@/typings/data.d'
+import person from '@/database/person.json'
+import data from '@/database/data.json'
 
 function HomePage() {
   const [type, setType] = useState('times')

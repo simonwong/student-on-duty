@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
 
-import Main from './main'
-import Record from './record'
+import Main from '@/components/main'
+import Record from '@/components/record'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
