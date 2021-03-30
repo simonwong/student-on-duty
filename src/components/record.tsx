@@ -13,6 +13,8 @@ import {
 import data from '@/database/data.json'
 import person from '@/database/person.json'
 
+const reversedData = data.reverse()
+
 const personObj = person.reduce(
   (preObj, nextItem) => ({
     ...preObj,
@@ -73,7 +75,7 @@ const Record = () => (
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.reverse().map(row => (
+          {reversedData.map(row => (
             <TableRow key={row.createDate}>
               {columns.map(col => (
                 <TableCell key={col.field}>
