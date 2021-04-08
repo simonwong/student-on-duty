@@ -12,4 +12,15 @@ module.exports = {
     // Important: return the modified config
     return config
   },
+  async rewrites() {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://localhost:3000/:path*', // Proxy to Backend
+        },
+      ]
+    }
+    return []
+  },
 }

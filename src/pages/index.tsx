@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
 
 import Main from '@/components/main'
 import Record from '@/components/record'
+
+import { get } from '@/utils/request'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -36,6 +38,15 @@ function a11yProps(index) {
 
 function HomePage() {
   const [value, setValue] = useState(0)
+  const [users, setUsers] = useState([])
+  const [duties, setDuties] = useState([])
+
+  useEffect(() => {
+    Promise.all([get('/users'), get('/duties')]).then(([userRes, dutyRes]) => {
+      setUsers(userRes)
+      setDuties(dutyRes)
+    })
+  }, [])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -54,10 +65,10 @@ function HomePage() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Main />
+        <Main users={users} duties={duties} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Record />
+        <Record users={users} duties={duties} />
       </TabPanel>
     </Container>
   )
