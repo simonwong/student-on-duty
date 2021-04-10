@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-
 import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
 
 import Main from '@/components/main'
@@ -64,10 +63,10 @@ function HomePage() {
           <Tab label="值日生记录表格" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel className="bg-white" value={value} index={0}>
         <Main users={users} duties={duties} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel className="bg-white" value={value} index={1}>
         <Record users={users} duties={duties} />
       </TabPanel>
     </Container>

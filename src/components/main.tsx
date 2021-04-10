@@ -134,7 +134,7 @@ function HomePage({ users, duties }) {
           </Button>
         ))}
       </ButtonGroup>
-      <div style={{ width: '80vw', height: '70vh' }} id="main" />
+      <div className="w-full" style={{ height: '75vh' }} id="main" />
     </div>
   )
 }

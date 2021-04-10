@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
 } from '@material-ui/core'
 
 const Record = ({ users, duties }) => {
@@ -65,9 +66,23 @@ const Record = ({ users, duties }) => {
     },
   ]
 
+  const handleAddNewRecord = () => {
+    console.log('有请下两位幸运儿')
+  }
+
   return (
-    <div style={{ height: 500 }}>
-      <h2>值日生记录</h2>
+    <div>
+      <div className="flex items-center">
+        <h2 className="mr-4">值日生记录</h2>
+        <Button
+          className="h-9"
+          onClick={handleAddNewRecord}
+          variant="contained"
+          color="secondary"
+        >
+          有请下两位幸运儿
+        </Button>
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

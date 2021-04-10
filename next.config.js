@@ -7,7 +7,11 @@ module.exports = {
   ) => {
     // Note: we provide webpack above so you should not `require` it
     // Perform customizations to webpack config
-    config.plugins.push(new TsconfigPathsPlugin({}))
+    config.plugins.push(
+      new TsconfigPathsPlugin({
+        configFile: './tsconfig.json',
+      }),
+    )
 
     // Important: return the modified config
     return config
