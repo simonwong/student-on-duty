@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Star } from '@material-ui/icons'
 import {
   Chip,
@@ -11,9 +11,11 @@ import {
   Paper,
   Button,
 } from '@material-ui/core'
+import NewDutiesDialog from './NewDutiesDialog'
 
 const Record = ({ users, duties }) => {
   const reversedData = useMemo(() => [...duties].reverse(), [duties])
+  const [open, setOpen] = useState(false)
 
   const personObj = useMemo(
     () =>
@@ -66,8 +68,13 @@ const Record = ({ users, duties }) => {
     },
   ]
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   const handleAddNewRecord = () => {
     console.log('有请下两位幸运儿')
+    setOpen(true)
   }
 
   return (
@@ -107,6 +114,7 @@ const Record = ({ users, duties }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <NewDutiesDialog users={users} open={open} onClose={handleClose} />
     </div>
   )
 }

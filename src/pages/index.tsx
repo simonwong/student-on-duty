@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
+import { AppBar, Tabs, Tab, Box } from '@material-ui/core'
 
+import Layout from '@/components/Layout'
 import Main from '@/components/main'
 import Record from '@/components/record'
 
@@ -52,7 +53,7 @@ function HomePage() {
   }
 
   return (
-    <Container>
+    <Layout>
       <AppBar position="static">
         <Tabs
           value={value}
@@ -69,7 +70,7 @@ function HomePage() {
       <TabPanel className="bg-white" value={value} index={1}>
         <Record users={users} duties={duties} />
       </TabPanel>
-    </Container>
+    </Layout>
   )
 }
 

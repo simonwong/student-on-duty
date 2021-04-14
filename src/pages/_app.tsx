@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import theme from '@/theme'
-import 'tailwindcss/tailwind.css'
+import '@/styles/global.css'
 
 export default function MyApp({ Component, pageProps }) {
   React.useEffect(() => {

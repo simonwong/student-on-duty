@@ -27,8 +27,12 @@
     ]
   },
   "dependencies": {
+    "@date-io/date-fns": "1.x",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.3.10",
+    "date-fns": "^2.20.3",
     "echarts": "^5.0.2",
     "next": "^10.0.8",
     "qs": "^6.10.1",
