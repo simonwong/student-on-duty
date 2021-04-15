@@ -3,8 +3,19 @@ import * as echarts from 'echarts'
 import { ButtonGroup, Button } from '@material-ui/core'
 import { DataList, PersonList } from '@/typings/data.d'
 
+// 场次胜率统计
+const calculateTimesRate = item =>
+  ((item.times / item.joinTimes) * 100).toFixed(2)
+
+// 个人平均胜率统计
+const calculateAverageRate = item =>
+  (
+    (item.rateArr.reduce((pre, next) => pre + next, 0) / item.rateArr.length) *
+    100
+  ).toFixed(2)
+
 function HomePage({ users, duties }) {
-  const [type, setType] = useState('times')
+  const [type, setType] = useState('comprehensiveRank')
   // 人物数据
   const personMap = useMemo(() => {
     const obj = {}
@@ -39,46 +50,129 @@ function HomePage({ users, duties }) {
 
   // 数据统计
   const stateMap = useMemo(() => {
-    // 胜利次数统计
-    const timesData = Object.keys(personMap).map(id => ({
-      value: personMap[id].times,
-      name: personMap[id].name,
-    }))
+    let maxRate = 20
+    const comprehensiveData = Object.keys(personMap)
+      .map(id => {
+        const timesRate = calculateTimesRate(personMap[id])
+        const averageRate = calculateAverageRate(personMap[id])
 
-    // 胜利次数统计
-    const sessionWinData = Object.keys(personMap).map(id => ({
-      value: personMap[id].times / personMap[id].joinTimes,
-      name: personMap[id].name,
-    }))
+        maxRate = Math.max(
+          maxRate,
+          Math.ceil(Number(timesRate)),
+          Math.ceil(Number(averageRate)),
+        )
 
-    const personWinData = Object.keys(personMap).map(id => ({
-      value:
-        personMap[id].rateArr.reduce((pre, next) => pre + next, 0) /
-        personMap[id].rateArr.length,
-      name: personMap[id].name,
-    }))
+        return {
+          // 胜利次数
+          times: personMap[id].times,
+          // 场次胜率
+          timesRate,
+          // 平均胜率
+          averageRate,
+          name: personMap[id].name,
+        }
+      })
+      .sort((a, b) => b.times - a.times)
 
-    const personRankData = Object.keys(personMap).map(id => ({
-      value: personMap[id].rankArr.reduce((pre, next) => pre + next, 0),
-      name: personMap[id].name,
-    }))
+    const personRankData = Object.keys(personMap)
+      .map(id => ({
+        value: personMap[id].rankArr.reduce((pre, next) => pre + next, 0),
+        name: personMap[id].name,
+      }))
+      .sort((a, b) => a.value - b.value)
 
     return {
-      times: {
-        title: '胜利次数统计',
-        data: timesData,
-      },
-      sessionWin: {
-        title: '场次胜率统计',
-        data: sessionWinData,
-      },
-      personWin: {
-        title: '个人平均胜率统计',
-        data: personWinData,
+      comprehensiveRank: {
+        title: '综合数据',
+        data: comprehensiveData,
+        option: {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              crossStyle: {
+                color: '#999',
+              },
+            },
+          },
+          legend: {
+            data: ['胜利次数', '场次胜率', '平均胜率'],
+          },
+          xAxis: {
+            type: 'category',
+            data: comprehensiveData.map(item => item.name),
+            axisPointer: {
+              type: 'shadow',
+            },
+          },
+          yAxis: [
+            {
+              type: 'value',
+              name: '次数',
+              min: 0,
+              max: comprehensiveData[0]?.times || 50,
+              interval: 5,
+              axisLabel: {
+                formatter: '{value} 次',
+              },
+            },
+            {
+              type: 'value',
+              name: '百分比',
+              min: 0,
+              max: maxRate,
+              interval: 20,
+              axisLabel: {
+                formatter: '{value} %',
+              },
+            },
+          ],
+          series: [
+            {
+              name: '胜利次数',
+              type: 'bar',
+              data: comprehensiveData.map(item => item.times),
+            },
+            {
+              name: '场次胜率',
+              type: 'line',
+              yAxisIndex: 1,
+              data: comprehensiveData.map(item => item.timesRate),
+            },
+            {
+              name: '平均胜率',
+              type: 'line',
+              yAxisIndex: 1,
+              data: comprehensiveData.map(item => item.averageRate),
+            },
+          ],
+        },
       },
       personRank: {
         title: '个人实力段位',
         data: personRankData,
+        option: {
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c}',
+          },
+          legend: {
+            top: 'bottom',
+          },
+          series: [
+            {
+              name: '个人实力段位',
+              type: 'pie',
+              radius: [50, 250],
+              center: ['50%', '50%'],
+              roseType: 'area',
+              itemStyle: {
+                borderRadius: 8,
+              },
+              data: personRankData,
+            },
+          ],
+        },
       },
     }
   }, [personMap])
@@ -86,30 +180,9 @@ function HomePage({ users, duties }) {
   useEffect(() => {
     const chartDom = document.getElementById('main')
     const myChart = echarts.init(chartDom)
-    const option = {
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c}',
-      },
-      legend: {
-        top: 'bottom',
-      },
-      series: [
-        {
-          name: '值日生胜利分布图',
-          type: 'pie',
-          radius: [50, 250],
-          center: ['50%', '50%'],
-          roseType: 'area',
-          itemStyle: {
-            borderRadius: 8,
-          },
-          data: stateMap[type].data,
-        },
-      ],
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    option && myChart.setOption(option)
+    const { option: customOption } = stateMap[type]
+
+    myChart.setOption(customOption, true)
   }, [personMap, stateMap, type])
 
   // const sortedData = data.sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
