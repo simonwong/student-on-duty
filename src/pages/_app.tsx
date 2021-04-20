@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
+import { RecoilRoot } from 'recoil'
 import theme from '@/theme'
 import '@/styles/global.css'
 
@@ -25,7 +26,9 @@ export default function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
       </ThemeProvider>
     </>
   )

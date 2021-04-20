@@ -1,75 +1,49 @@
-import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, Box } from '@material-ui/core'
+import React, { useState, useEffect, useMemo } from 'react'
+import * as echarts from 'echarts'
+import { ButtonGroup, Button } from '@material-ui/core'
+import { useRecoilValue } from 'recoil'
+import { comprehensiveDataSate, personRankDataState } from '@/store/main'
 
 import Layout from '@/components/Layout'
-import Main from '@/components/main'
-import Record from '@/components/record'
-
-import { get } from '@/utils/request'
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </div>
-  )
-}
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.any.isRequired,
-//   value: PropTypes.any.isRequired,
-// }
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  }
-}
 
 function HomePage() {
-  const [value, setValue] = useState(0)
-  const [users, setUsers] = useState([])
-  const [duties, setDuties] = useState([])
+  const [type, setType] = useState('comprehensiveRank')
+  const comprehensiveData = useRecoilValue(comprehensiveDataSate)
+  const personRankData = useRecoilValue(personRankDataState)
+
+  const stateMap = useMemo(
+    () => ({
+      comprehensiveRank: comprehensiveData,
+      personRank: personRankData,
+    }),
+    [comprehensiveData, personRankData],
+  )
 
   useEffect(() => {
-    Promise.all([get('/users'), get('/duties')]).then(([userRes, dutyRes]) => {
-      setUsers(userRes)
-      setDuties(dutyRes)
-    })
-  }, [])
+    const chartDom = document.getElementById('main')
+    const myChart = echarts.init(chartDom)
+    const { option: customOption } = stateMap[type]
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    myChart.setOption(customOption, true)
+  }, [stateMap, type])
 
   return (
     <Layout>
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-        >
-          <Tab label="胜率图表统计" {...a11yProps(0)} />
-          <Tab label="值日生记录表格" {...a11yProps(1)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel className="bg-white" value={value} index={0}>
-        <Main users={users} duties={duties} />
-      </TabPanel>
-      <TabPanel className="bg-white" value={value} index={1}>
-        <Record users={users} duties={duties} />
-      </TabPanel>
+      <h2>{stateMap[type].title}</h2>
+      <ButtonGroup color="secondary">
+        {Object.keys(stateMap).map(key => (
+          <Button
+            type="button"
+            key={key}
+            onClick={() => {
+              setType(key)
+            }}
+          >
+            {stateMap[key].title}
+          </Button>
+        ))}
+      </ButtonGroup>
+      <div className="w-full" style={{ height: '75vh' }} id="main" />
     </Layout>
   )
 }

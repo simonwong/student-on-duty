@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Star } from '@material-ui/icons'
 import {
   Chip,
@@ -11,23 +11,17 @@ import {
   Paper,
   Button,
 } from '@material-ui/core'
-import NewDutiesDialog from './NewDutiesDialog'
+import { useRecoilValue } from 'recoil'
+import Layout from '@/components/Layout'
+import NewDutiesDialog from '@/components/NewDutiesDialog'
 
-const Record = ({ users, duties }) => {
-  const reversedData = useMemo(() => [...duties].reverse(), [duties])
+import { personObjState, reversedDataState } from '@/store/record'
+
+function HomePage() {
+  const personObj = useRecoilValue(personObjState)
+  const reversedData = useRecoilValue(reversedDataState)
   const [open, setOpen] = useState(false)
 
-  const personObj = useMemo(
-    () =>
-      users.reduce(
-        (preObj, nextItem) => ({
-          ...preObj,
-          [nextItem.id]: nextItem.name,
-        }),
-        {},
-      ),
-    [users],
-  )
   const columns = [
     { field: 'createDate', width: 200, headerName: '日期' },
     {
@@ -76,9 +70,8 @@ const Record = ({ users, duties }) => {
     console.log('有请下两位幸运儿')
     setOpen(true)
   }
-
   return (
-    <div>
+    <Layout>
       <div className="flex items-center">
         <h2 className="mr-4">值日生记录</h2>
         <Button
@@ -114,9 +107,9 @@ const Record = ({ users, duties }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <NewDutiesDialog users={users} open={open} onClose={handleClose} />
-    </div>
+      <NewDutiesDialog open={open} onClose={handleClose} />
+    </Layout>
   )
 }
 
-export default Record
+export default HomePage

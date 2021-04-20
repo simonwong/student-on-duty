@@ -20,6 +20,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
+import { useRecoilState } from 'recoil'
+import { userState } from '@/store/global'
 import Message from './Message'
 
 const initialJoins = users => {
@@ -30,7 +32,8 @@ const initialJoins = users => {
   return ans
 }
 
-function NewDutiesDialog({ users, open, onClose }) {
+function NewDutiesDialog({ open, onClose }) {
+  const [users] = useRecoilState(userState)
   const [joinMap, setJoinMap] = useState(initialJoins(users))
   const [date, setDate] = useState(new Date())
   const [duties, setDuties] = useState([])
@@ -47,6 +50,11 @@ function NewDutiesDialog({ users, open, onClose }) {
 
     if (newJoinMap[user.id] != null) {
       delete newJoinMap[user.id]
+
+      if (duties.includes(String(user.id))) {
+        const nextDuties = duties.filter(dutyId => dutyId !== String(user.id))
+        setDuties(nextDuties)
+      }
     } else {
       newJoinMap[user.id] = user.name
     }
@@ -68,6 +76,22 @@ function NewDutiesDialog({ users, open, onClose }) {
 
   const handleCloseMsg = () => {
     setAlertMsg(null)
+  }
+
+  const handleConfirm = () => {
+    const [year, month, day] = [
+      date.getFullYear(),
+      date.getMonth() + 1 < 10
+        ? `0${date.getMonth() + 1}`
+        : date.getMonth() + 1,
+      date.getDate() < 10 ? `0${date.getDate()}` : date.getDate(),
+    ]
+    const confirmData = {
+      duties,
+      joins: Object.keys(joinMap),
+      date: `${year}-${month}-${day}`,
+    }
+    console.log(`confirmData`, confirmData)
   }
 
   return (
@@ -134,7 +158,7 @@ function NewDutiesDialog({ users, open, onClose }) {
         <Button onClick={onClose} color="primary">
           取消
         </Button>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={handleConfirm} color="primary">
           提交
         </Button>
       </DialogActions>
