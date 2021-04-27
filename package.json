@@ -34,6 +34,7 @@
     "@material-ui/pickers": "^3.3.10",
     "date-fns": "^2.20.3",
     "echarts": "^5.0.2",
+    "material-ui-popup-state": "^1.8.2",
     "next": "^10.0.8",
     "qs": "^6.10.1",
     "react": "^17.0.1",

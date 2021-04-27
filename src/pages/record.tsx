@@ -67,9 +67,9 @@ function HomePage() {
   }
 
   const handleAddNewRecord = () => {
-    console.log('有请下两位幸运儿')
     setOpen(true)
   }
+
   return (
     <Layout>
       <div className="flex items-center">

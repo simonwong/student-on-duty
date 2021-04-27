@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
 import { withRouter, useRouter } from 'next/router'
-import { get } from '@/utils/request'
 import { useRecoilState } from 'recoil'
+import TopGlory from '@/components/TopGlory'
+import { get } from '@/utils/request'
 import { userState, dutyState } from '@/store/global'
 
 const ROUTER_TAB_MAP = {
@@ -46,6 +47,7 @@ function Layout({ children, router }) {
         </Tabs>
       </AppBar>
       <div className="bg-white" role="tabpanel">
+        <TopGlory />
         <Box p={3}>{children}</Box>
       </div>
     </Container>

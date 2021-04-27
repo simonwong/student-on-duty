@@ -7,12 +7,9 @@ function Alert(props) {
 }
 
 function Message({ msg, onClose }) {
-  console.log(`msg`, msg)
   return (
     <Snackbar open={!!msg} autoHideDuration={3000} onClose={onClose}>
-      <Alert onClose={onClose} severity="error">
-        {msg}
-      </Alert>
+      <Alert severity="error">{msg}</Alert>
     </Snackbar>
   )
 }
