@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, AppBar, Tabs, Tab, Box } from '@material-ui/core'
 import { withRouter, useRouter } from 'next/router'
+import { SnackbarProvider } from 'notistack'
 import { useRecoilState } from 'recoil'
 import TopGlory from '@/components/TopGlory'
 import { get } from '@/utils/request'
@@ -36,20 +37,22 @@ function Layout({ children, router }) {
 
   return (
     <Container>
-      <AppBar position="static">
-        <Tabs
-          value={tab}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-        >
-          <Tab label="胜率图表统计" />
-          <Tab label="值日生记录表格" />
-        </Tabs>
-      </AppBar>
-      <div className="bg-white" role="tabpanel">
-        <TopGlory />
-        <Box p={3}>{children}</Box>
-      </div>
+      <SnackbarProvider maxSnack={3}>
+        <AppBar position="static">
+          <Tabs
+            value={tab}
+            onChange={handleChange}
+            aria-label="simple tabs example"
+          >
+            <Tab label="胜率图表统计" />
+            <Tab label="值日生记录表格" />
+          </Tabs>
+        </AppBar>
+        <div className="bg-white" role="tabpanel">
+          <TopGlory />
+          <Box p={3}>{children}</Box>
+        </div>
+      </SnackbarProvider>
     </Container>
   )
 }

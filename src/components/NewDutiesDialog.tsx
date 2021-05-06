@@ -13,6 +13,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  TextField,
 } from '@material-ui/core'
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
@@ -20,9 +21,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
+import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/store/global'
-import Message from './Message'
 
 const initialJoins = users => {
   const ans = {}
@@ -35,9 +36,30 @@ const initialJoins = users => {
 function NewDutiesDialog({ open, onClose }) {
   const [users] = useRecoilState(userState)
   const [joinMap, setJoinMap] = useState(initialJoins(users))
-  const [date, setDate] = useState(new Date())
+  const { enqueueSnackbar } = useSnackbar()
+
+  // 选手
   const [duties, setDuties] = useState([])
-  const [alertMsg, setAlertMsg] = useState(null)
+  const handleChangeDuties = e => {
+    const { value } = e.target
+    if (value.length > 2) {
+      enqueueSnackbar('只能有两名最佳选手啊', { variant: 'warning' })
+      return
+    }
+    setDuties(value)
+  }
+
+  // 时间
+  const [date, setDate] = useState(new Date())
+  const handleChangeDate = value => {
+    setDate(value)
+  }
+
+  // code
+  const [code, setCode] = useState('')
+  const handleChangeCode = e => {
+    setCode(e.target.value)
+  }
 
   const handleDelete = user => {
     const newJoinMap = { ...joinMap }
@@ -61,23 +83,6 @@ function NewDutiesDialog({ open, onClose }) {
     setJoinMap(newJoinMap)
   }
 
-  const handleChangeDate = value => {
-    setDate(value)
-  }
-
-  const handleChangeDuties = e => {
-    const { value } = e.target
-    if (value.length > 2) {
-      setAlertMsg('只能有两名最佳选手啊')
-      return
-    }
-    setDuties(value)
-  }
-
-  const handleCloseMsg = () => {
-    setAlertMsg(null)
-  }
-
   const handleConfirm = () => {
     const [year, month, day] = [
       date.getFullYear(),
@@ -90,6 +95,14 @@ function NewDutiesDialog({ open, onClose }) {
       duties,
       joins: Object.keys(joinMap),
       date: `${year}-${month}-${day}`,
+      code,
+    }
+    if (
+      confirmData.duties?.length < 2 ||
+      confirmData.joins?.length < 2 ||
+      code.trim() === ''
+    ) {
+      enqueueSnackbar('表格填完先', { variant: 'warning' })
     }
     console.log(`confirmData`, confirmData)
   }
@@ -152,8 +165,13 @@ function NewDutiesDialog({ open, onClose }) {
             }}
           />
         </MuiPickersUtilsProvider>
+        <TextField
+          className="w-full"
+          label="验证码"
+          value={code}
+          onChange={handleChangeCode}
+        />
       </DialogContent>
-      <Message msg={alertMsg} onClose={handleCloseMsg} />
       <DialogActions>
         <Button onClick={onClose} color="primary">
           取消

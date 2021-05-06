@@ -7,11 +7,22 @@ function Alert(props) {
 }
 
 function Message({ msg, onClose }) {
+  const handelCLose = () => {
+    onClose()
+  }
+
   return (
-    <Snackbar open={!!msg} autoHideDuration={3000} onClose={onClose}>
-      <Alert severity="error">{msg}</Alert>
+    <Snackbar
+      open={!!msg}
+      message={msg}
+      autoHideDuration={3000}
+      onClose={handelCLose}
+    >
+      <Alert onClose={handelCLose} severity="error">
+        {msg}
+      </Alert>
     </Snackbar>
   )
 }
 
-export default Message
+export default React.memo(Message)
