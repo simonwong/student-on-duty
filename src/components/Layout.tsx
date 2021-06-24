@@ -8,7 +8,10 @@ import { get } from '@/utils/request'
 import { userState, dutyState } from '@/store/global'
 
 const ROUTER_TAB_MAP = {
+  '/star': 2,
   '/record': 1,
+  '/': 0,
+  2: '/star',
   1: '/record',
   0: '/',
 }
@@ -46,6 +49,7 @@ function Layout({ children, router }) {
           >
             <Tab label="胜率图表统计" />
             <Tab label="值日生记录表格" />
+            <Tab label="本月之星" />
           </Tabs>
         </AppBar>
         <div className="bg-white" role="tabpanel">
