@@ -5,6 +5,7 @@ import Layout from '@/components/Layout'
 import { isSameMonth } from 'date-fns'
 
 import { personObjState, reversedDataState } from '@/store/record'
+import Student from '@/components/Student'
 
 function StarPage() {
   const personObj = useRecoilValue(personObjState)
@@ -33,7 +34,7 @@ function StarPage() {
 
     let first = []
     let firstNum = 0
-    const second = []
+    let second = []
 
     Object.entries(personTimeObj).forEach(([personId, times]) => {
       if (firstNum > times) {
@@ -41,10 +42,13 @@ function StarPage() {
       } else if (firstNum === times) {
         first.push({ personId, times })
       } else {
+        second = second.concat(first)
         first = [{ personId, times }]
         firstNum = times
       }
     })
+
+    second = second.sort(({ times: pre }, { times: next }) => next - pre)
 
     return {
       first,
@@ -60,8 +64,9 @@ function StarPage() {
       <TableContainer className="p-4" component={Paper}>
         <div className="mb-4 flex">
           {starData?.first?.map(({ personId, times }) => (
-            <div className="mr-2">
-              {personObj[personId]} {times} 次
+            <div className="mr-3">
+              <Student color="secondary" id={personId} />
+              <span className="text-lg ml-1 h-10 inline-block">{times} 次</span>
             </div>
           ))}
         </div>
