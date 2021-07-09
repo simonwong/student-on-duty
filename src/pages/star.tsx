@@ -65,7 +65,7 @@ function StarPage() {
         <div className="mb-4 flex">
           {starData?.first?.map(({ personId, times }) => (
             <div className="mr-3">
-              <Student color="secondary" id={personId} />
+              <Student isStar id={personId} />
               <span className="text-lg ml-1 h-10 inline-block">{times} 次</span>
             </div>
           ))}

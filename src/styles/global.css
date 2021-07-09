@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blink {
+  position: relative;
+  overflow: hidden;
+}
+
+.blink::after {
+  position: absolute;
+  width:30%;
+	height:100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, .4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform:skewX(-45deg);
+  animation: changeImg 1s ease 0.5s infinite;
+  content: "";
+}
+
+@keyframes changeImg {
+	from {
+    left: -50%;
+  }
+  100% {
+    left: 120%;
+  }
+}

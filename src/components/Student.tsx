@@ -6,17 +6,25 @@ import { studentMapState } from '@/store/global'
 interface StudentProps {
   className?: string
   id: string | number
-  color?: 'inherit' | 'default' | 'primary' | 'secondary'
+  isStar?: boolean
 }
 
-const Student: React.FC<StudentProps> = ({ className, color, id }) => {
+const Student: React.FC<StudentProps> = ({ className, isStar, id }) => {
   const studentMap = useRecoilValue(studentMapState)
+
+  const color = isStar ? 'secondary' : 'primary'
+  const blink = isStar
 
   if (!studentMap[id]) {
     return null
   }
   return (
-    <Fab color={color} size="medium" variant="extended" className={className}>
+    <Fab
+      color={color}
+      size="medium"
+      variant="extended"
+      className={`${blink ? 'blink' : ''} ${className}`}
+    >
       {studentMap[id]}
     </Fab>
   )

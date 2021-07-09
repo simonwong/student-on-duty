@@ -75,7 +75,15 @@ export const comprehensiveDataSate = selector({
           name: personMap[id].name,
         }
       })
-      .sort((a, b) => b.times - a.times)
+      .sort((a, b) => {
+        if (a.times !== b.times) {
+          return b.times - a.times
+        }
+        if (a.timesRate !== b.timesRate) {
+          return Number(b.timesRate) - Number(a.timesRate)
+        }
+        return Number(b.averageRate) - Number(a.averageRate)
+      })
 
     return {
       title: '综合数据',

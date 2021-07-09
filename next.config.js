@@ -21,6 +21,7 @@ module.exports = {
       return [
         {
           source: '/api/:path*',
+          // destination: 'http://localhost:3000/:path*', // Proxy to Backend
           destination: 'https://onduty.wangsijie.top/api/:path*', // Proxy to Backend
         },
       ]

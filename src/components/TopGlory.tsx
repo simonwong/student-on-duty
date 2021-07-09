@@ -48,12 +48,7 @@ const TopGlory = () => {
                     <>
                       <ListItem>
                         {item.name.map(id => (
-                          <Student
-                            color="secondary"
-                            key={id}
-                            className="mr-1"
-                            id={id}
-                          />
+                          <Student isStar key={id} className="mr-1" id={id} />
                         ))}
                         （累计合作 {item.times} 次）
                       </ListItem>

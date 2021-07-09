@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import { useRecoilValue } from 'recoil'
 import Layout from '@/components/Layout'
+import Student from '@/components/Student'
 import NewDutiesDialog from '@/components/NewDutiesDialog'
 
 import { personObjState, reversedDataState } from '@/store/record'
@@ -26,11 +27,21 @@ function HomePage() {
     { field: 'createDate', width: 200, headerName: '日期' },
     {
       field: 'onDuty',
-      width: 200,
       headerName: '值日生',
       valueFormatter: ({ value }) => (
         <div>
           {value.map((id: number) => (
+            <Student key={id} id={id} />
+          ))}
+        </div>
+      ),
+    },
+    {
+      field: 'initiative',
+      headerName: '雷锋',
+      valueFormatter: ({ value }) => (
+        <div>
+          {value?.map((id: number) => (
             <Chip
               key={id}
               style={{ marginRight: 5 }}
