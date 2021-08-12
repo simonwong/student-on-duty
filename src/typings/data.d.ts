@@ -1,6 +1,7 @@
 type PersonItem = {
   name: string
   id: number
+  deleted?: boolean
 }
 
 export type PersonList = PersonItem[]

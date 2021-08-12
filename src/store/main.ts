@@ -10,7 +10,7 @@ export const personMapState = selector({
     const duties = get(dutyState)
 
     const obj = {}
-    ;(users as PersonList).forEach(({ id, name }) => {
+    ;(users as PersonList).forEach(({ id, name, deleted }) => {
       obj[id] = {
         name,
         times: 0,
@@ -18,6 +18,7 @@ export const personMapState = selector({
         rate: 0,
         rateArr: [],
         rankArr: [],
+        deleted,
       }
     })
     ;(duties as DataList).forEach(item => {
@@ -55,6 +56,7 @@ export const comprehensiveDataSate = selector({
     const personMap = get(personMapState)
     let maxRate = 20
     const comprehensiveData = Object.keys(personMap)
+      .filter(id => !personMap[id].deleted)
       .map(id => {
         const timesRate = calculateTimesRate(personMap[id])
         const averageRate = calculateAverageRate(personMap[id])
