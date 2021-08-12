@@ -161,6 +161,7 @@ export const personRankDataState = selector({
   get: ({ get }) => {
     const personMap = get(personMapState)
     const personRankData = Object.keys(personMap)
+      .filter(id => !personMap[id].deleted)
       .map(id => ({
         value: personMap[id].rankArr.reduce((pre, next) => pre + next, 0),
         name: personMap[id].name,
