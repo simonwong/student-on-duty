@@ -5,10 +5,12 @@ import Layout from '@/components/Layout'
 import { isSameMonth } from 'date-fns'
 
 import { personObjState, reversedDataState } from '@/store/record'
+import { personMapState } from '@/store/main'
 import Student from '@/components/Student'
 
 function StarPage() {
   const personObj = useRecoilValue(personObjState)
+  const personMap = useRecoilValue(personMapState)
   const reversedData = useRecoilValue(reversedDataState)
 
   const currentMonthData = useMemo(
@@ -35,6 +37,9 @@ function StarPage() {
     let first = []
     let firstNum = 0
     let second = []
+    const last = Object.keys(personMap).filter(
+      key => !personTimeObj[key] && !personMap[key].deleted,
+    )
 
     Object.entries(personTimeObj).forEach(([personId, times]) => {
       if (firstNum > times) {
@@ -53,8 +58,9 @@ function StarPage() {
     return {
       first,
       second,
+      last,
     }
-  }, [currentMonthData])
+  }, [currentMonthData, personMap])
 
   return (
     <Layout>
@@ -70,10 +76,23 @@ function StarPage() {
             </div>
           ))}
         </div>
+      </TableContainer>
+      <div className="flex items-center">
+        <h2 className="mr-4">还需努力</h2>
+      </div>
+      <TableContainer className="p-4" component={Paper}>
         {starData?.second?.map(({ personId, times }) => (
           <div className="mb-2">
             {personObj[personId]} {times} 次
           </div>
+        ))}
+      </TableContainer>
+      <div className="flex items-center">
+        <h2 className="mr-4">真是怠惰</h2>
+      </div>
+      <TableContainer className="p-4" component={Paper}>
+        {starData?.last?.map(personId => (
+          <div className="mb-2">{personObj[personId]}</div>
         ))}
       </TableContainer>
     </Layout>
