@@ -30,3 +30,17 @@
     left: 120%;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #15172a;
+    filter: invert(1) hue-rotate(180deg);
+  }
+  html img {
+  	filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+html {
+  transition: color 0.3s, background-color 0.3s;
+}
