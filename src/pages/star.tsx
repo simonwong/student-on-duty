@@ -26,8 +26,13 @@ function StarPage() {
       [personId: string]: number
     } = {}
 
-    currentMonthData.forEach(({ onDuty }) => {
+    currentMonthData.forEach(({ onDuty, initiative }) => {
       onDuty.forEach(personId => {
+        personTimeObj[personId] = personTimeObj[personId]
+          ? personTimeObj[personId] + 1
+          : 1
+      })
+      initiative?.forEach(personId => {
         personTimeObj[personId] = personTimeObj[personId]
           ? personTimeObj[personId] + 1
           : 1
@@ -62,6 +67,20 @@ function StarPage() {
     }
   }, [currentMonthData, personMap])
 
+  const leiFenData = useMemo(() => {
+    const leifFen: {
+      [personId: string]: number
+    } = {}
+
+    currentMonthData.forEach(({ initiative }) => {
+      initiative?.forEach(personId => {
+        leifFen[personId] = leifFen[personId] ? leifFen[personId] + 1 : 1
+      })
+    })
+
+    return leifFen
+  }, [currentMonthData])
+
   return (
     <Layout>
       <div className="flex items-center">
@@ -72,7 +91,15 @@ function StarPage() {
           {starData?.first?.map(({ personId, times }) => (
             <div className="mr-3">
               <Student isStar id={personId} />
-              <span className="text-lg ml-1 h-10 inline-block">{times} 次</span>
+              <span className="text-lg ml-1 h-10 inline-block">
+                {times} 次
+                {leiFenData[personId] && (
+                  <>
+                    （雷锋：
+                    {leiFenData[personId]}次）
+                  </>
+                )}
+              </span>
             </div>
           ))}
         </div>
@@ -84,6 +111,12 @@ function StarPage() {
         {starData?.second?.map(({ personId, times }) => (
           <div className="mb-2">
             {personObj[personId]} {times} 次
+            {leiFenData[personId] && (
+              <>
+                （雷锋：
+                {leiFenData[personId]}次）
+              </>
+            )}
           </div>
         ))}
       </TableContainer>
